@@ -1,0 +1,1 @@
+(()=>{var e=document.getElementById("lan-lgf-click-element");if(e){var t=e.getAttribute("data-leadgen-landing-page-url");t&&e.addEventListener("click",(function(n){var a;n.preventDefault(),window.fetch(e.href),window.open((a=t).startsWith("mopubnativebrowser://navigate?url=")||a.startsWith("linkedin://")?a:"https:".concat(a.replace(/(^\w+:|^)/,"")),e.target)}))}})();

@@ -1,0 +1,268 @@
+/* http://meyerweb.com/eric/tools/css/reset/ 
+   v2.0 | 20110126
+   License: none (public domain)
+*/
+
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed, 
+figure, figcaption, footer, header, hgroup, 
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	font-size: 100%;
+	font: inherit;
+	vertical-align: baseline;
+}
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure, 
+footer, header, hgroup, menu, nav, section {
+	display: block;
+}
+body {
+	line-height: 1;
+}
+ol, ul {
+	list-style: none;
+}
+blockquote, q {
+	quotes: none;
+}
+blockquote:before, blockquote:after,
+q:before, q:after {
+	content: '';
+	content: none;
+}
+table {
+	border-collapse: collapse;
+	border-spacing: 0;
+}
+
+
+
+
+@font-face {
+  font-family: 'ITVDisplaySansBlack';
+  src: url('ITVDisplaySans-Black.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'ITVDisplaySansBold';
+  src: url('ITVDisplaySans-Bold.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+
+
+body {
+  vertical-align: baseline;
+  border: 0 none;
+  outline: 0;
+  padding: 0;
+  margin: 0;
+  background-color: #102c3d;
+}
+
+#main-container {
+/* ---------------------------------------------------
+Comment out before supplying!
+--------------------------------------------------- */
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+/* --------------------------------------------------- */
+
+  position: absolute;
+  width: 300px;
+  height: 250px;
+  border: 1px solid #ddea52;
+  box-sizing: border-box;
+  background: #243746;
+  overflow: hidden;
+}
+
+#content_dc {
+   overflow: hidden;
+   width:100%;
+   height:100%;
+}
+
+.fullsize {
+  position: absolute;
+  top:0px;
+  left:0px;
+  width: 300px;
+  height: 250px;
+}
+
+#blue_panel {
+  background-color: #102c3d;
+  /* opacity: 0.5; */
+}
+
+#show_logo {
+  position: absolute;
+  top: 212px;
+  left: 11px;
+  width: 80px;
+}
+
+#show_logo_2 {
+  position: absolute;
+  top: 56px;
+  margin: auto;
+  left: 0;
+  right: 0;
+  width: 182px;
+}
+
+#stream_on_logo {
+  position: absolute;
+  top: 217px;
+  left: 165px;
+  width: 123px;
+}
+
+
+#stream_on_logo_2 {
+  position: absolute;
+  margin: auto;
+  left: 0;
+  right: 0;
+  top: 160px;
+  width: 100px;
+}
+
+#arrow {
+  position: absolute;
+  width: 300px;
+  top:0px;
+  /* opacity:0.5; */
+}
+
+.headline {
+  font-family: ITVDisplaySansBlack;
+  color: #102c3d;
+  line-height: 0.82em;
+  letter-spacing: -0.02em;
+  font-size: 30px;
+  width:300px;
+}
+
+#Headline_1 {
+  position: absolute;
+  top: 126px;
+  text-align: center;
+  /* opacity: 0; */
+}
+
+#Headline_2 {
+  position: absolute;
+  top: 125px;
+  text-align: center;
+  opacity: 1;
+}
+
+.show_title {
+  font-family: ITVDisplaySansBold;
+  color: #102c3d;
+  line-height: 0.82em;
+  letter-spacing: -0.02em;
+  font-size: 11px;
+}
+
+#Show_Title {
+  position: absolute;
+  top: 183px;
+  width: 100%;
+  text-align: center;
+}
+
+
+sup {
+  position: absolute;
+  font-size: 0.8em;
+}
+
+#Headline_1_sup_1 {
+  left: 83px;
+  top: -5px;
+}
+
+#Headline_1_sup_2 {
+  left: 212px;
+  top: 25px;
+}
+
+#Headline_2_sup_1 {
+  left: 58px;
+  top: -3px;
+}
+
+#Headline_2_sup_2 {
+  left: 234px;
+  top: 22px;
+}
+
+.ratings_container {
+  position: absolute;
+  width: 100%;
+  height: 212px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 20px;
+  align-items: center;
+}
+
+
+.star_rating_container {
+  width: fit-content;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+  /* background-color: #ddea52; */
+}
+
+.publisher_title {
+  font-family: ITVDisplaySansBold;
+  color: #102c3d;
+  line-height: 0.82em;
+  letter-spacing: -0.02em;
+  font-size: 13px;
+}
+
+.stars_container {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+}
+
+.star {
+  width:45px;
+}
+
+#divider_line {
+  position: absolute;
+  width: 2px;
+  height: 140px;
+  top: 50px;
+  left: 474px;
+  background-color: #ddea52;
+}
+

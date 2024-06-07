@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<!-- saved from url=(0091)https://s0.2mdn.net/sadbundle/8803916371704731119/ITV_300x250_NoRating/index.html?ev=01_251 -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+  
+  <meta name="ad.size" content="width=300,height=250">
+  <link rel="stylesheet" type="text/css" href="./style.css">
+  <style type="text/css">#main-container{visibility: hidden;}</style>
+
+  <script>
+    var clickTag = "https://example.com/";
+  </script>
+
+<script type="text/javascript">
+    
+  (function() {
+    var MAX_URL_PARAM_LENGTH = 34;
+    var CLICK_X_URL_KEY = 'nx';
+    var CLICK_Y_URL_KEY = 'ny';
+    var CREATIVE_DIMENSIONS_KEY = 'dim';
+    var AD_URL_PARAM = '&adurl=';
+
+    var relegateNavigation = '';
+    var urlParamMap = {};
+
+    var isNewtonTokenSet = false;
+    var isTurtleXAdClick = false;
+    var reportingIds = {};
+
+    urlParamMap[CLICK_X_URL_KEY] = null;
+    urlParamMap[CLICK_Y_URL_KEY] = null;
+    urlParamMap[CREATIVE_DIMENSIONS_KEY] = null;
+
+    var handleClickTagMessage = function(e) {
+      try {
+        var eventData = JSON.parse(e.data);
+      } catch (err) {
+        return;
+      }
+      if (eventData.isInitClickTag) {
+        if (eventData.clickTags) {
+          for (var i = 0; i < eventData.clickTags.length; i++) {
+            var clkTag = eventData.clickTags[i];
+            window[clkTag.name] = clkTag.url;
+
+            if (clkTag.eTldPlusOne) {
+              eTldPlusOnes[clkTag.url] = clkTag.eTldPlusOne;
+            }
+            if (clkTag.reportingId) {
+              reportingIds[clkTag.url] = clkTag.reportingId;
+            }
+          }
+        } else if (eventData.clickTag) {
+          window.clickTag = eventData.clickTag;
+        }
+        relegateNavigation = eventData.relegateNavigation;
+      }
+      if (isNewtonEnabled(eventData) && !isNewtonTokenSet) {
+        var newtonOt2Token = eventData.newtonOt2Token;
+        enableAttributionReportingApi(newtonOt2Token);
+      }
+      if (eventData.isTurtleXAdClick) {
+        isTurtleXAdClick = true;
+      }
+    };
+
+    var isNewtonEnabled = function(eventData) {
+      return 'newtonOt2Token' in eventData;
+    }
+
+    var enableAttributionReportingApi = function(originTrialToken) {
+      if (/Chrome/.test(window.navigator.userAgent)) {
+        var meta = document.createElement('meta');
+        meta.httpEquiv = 'origin-trial';
+        meta.content = String(originTrialToken);
+        document.getElementsByTagName('head')[0].appendChild(meta);
+        isNewtonTokenSet = true;
+      }
+    };
+
+    var storeClickCoordinates = function(e) {
+      urlParamMap[CLICK_X_URL_KEY] = Math.round(e.clientX);
+      urlParamMap[CLICK_Y_URL_KEY] = Math.round(e.clientY);
+    };
+
+    var getCreativeDimensions = function() {
+      return window.innerWidth + 'x' + window.innerHeight;
+    }
+
+    var getExitClickParams = function(e) {
+      urlParamMap[CREATIVE_DIMENSIONS_KEY] = getCreativeDimensions();
+
+      var exitParams = '';
+      for (var key in urlParamMap) {
+        exitParams += '&' + key + '=';
+        if (urlParamMap[key] !== null) {
+          exitParams += urlParamMap[key];
+        }
+      }
+      return exitParams;
+    }
+
+    var appendExitClickParams = function(url) {
+      var adUrlIndex = url.toLowerCase().indexOf(AD_URL_PARAM);
+      var paramsToBeAdded = getExitClickParams();
+      if (adUrlIndex > -1 && paramsToBeAdded.length <= MAX_URL_PARAM_LENGTH) {
+        url = url.substr(0, adUrlIndex) + paramsToBeAdded +
+          url.substr(adUrlIndex);
+      };
+      return url;
+    };
+
+    if (open.call) {
+      window.open = function(open) {
+        return function(url, name, features) {
+          if (isTurtleXAdClick && !!reportingIds[url]) {
+            var message = {
+              'reportingId': reportingIds[url],
+              'clickX': urlParamMap[CLICK_X_URL_KEY],
+              'clickY': urlParamMap[CLICK_Y_URL_KEY],
+              'creativeDims': getCreativeDimensions()
+              };
+            parent.postMessage(JSON.stringify(message), '*');
+          }
+          url = appendExitClickParams(url);
+          if (relegateNavigation === 'parent') {
+            var message = {'clickTag': url, 'isPostClickTag': true};
+            parent.postMessage(JSON.stringify(message), '*');
+          } else {
+            var args = [url, name];
+            var windowFeatures = '';
+
+            if (features) {
+              windowFeatures = windowFeatures.concat(features);
+            }
+            if (isNewtonTokenSet &&
+                !!document.featurePolicy?.allowedFeatures().includes(
+                  'attribution-reporting')) {
+              if (features) {
+                if (!features.includes('attributionsrc')) {
+                  windowFeatures = windowFeatures.concat(features, ', attributionsrc');
+                }
+              } else {
+                windowFeatures = windowFeatures.concat('attributionsrc');
+              }
+            }
+
+            if (windowFeatures) {
+              args.push(windowFeatures);
+            }
+            open.apply(window,args);
+          }
+        };
+      }(window.open);
+    }
+
+    if (window.addEventListener) {
+      window.addEventListener(
+          'message', handleClickTagMessage, false);
+      window.addEventListener('mousedown', storeClickCoordinates, true);
+    } else {
+      window.attachEvent('onmessage', handleClickTagMessage);
+    }
+  })();
+    
+  </script><meta http-equiv="origin-trial" content="A4AD7vbM2W0e5fHylDM4fFrsUvtmQ95U+ZVrdOdh3fgH0l0e7RVkAsZryrSQIRhPVvmC60wTlh880eDyo+HpXQAAAABueyJvcmlnaW4iOiJodHRwczovL3MwLjJtZG4ubmV0OjQ0MyIsImZlYXR1cmUiOiJQcml2YWN5U2FuZGJveEFkc0FQSXMiLCJleHBpcnkiOjE2OTUxNjc5OTksImlzVGhpcmRQYXJ0eSI6dHJ1ZX0="></head>
+<body>
+    <div id="main-container" style="visibility: visible;">
+       <div id="content_dc">
+
+       <img id="show_img" class="fullsize" src="./show_img.jpg" style="translate: none; rotate: none; scale: none; transform: scale(1.15, 1.15); transform-origin: 50% 30%;">
+
+
+       <img id="arrow" src="./arrow.svg" style="top: -100px;">
+
+
+
+       <div id="Headline_1" class="headline" style="opacity: 0;">
+        <sup id="Headline_1_sup_1">"</sup>
+        HANDS<br>DOWN THE<br>COOLEST SHOW...
+      </div>
+       <div id="Headline_2" class="headline" style="opacity: 0;">
+        I'VE<br>EVER SEEN.
+        <sup id="Headline_2_sup_2">"</sup></div>
+       <div id="Show_Title" class="show_title" style="opacity: 0;">— Fan on Google Reviews</div>
+
+
+     
+        <div class="ratings_container">
+
+          <div id="star_rating_comtainer_1" class="star_rating_container">
+
+            <div class="stars_container">
+              <img class="star review_star_1" src="./star.svg" style="translate: none; rotate: none; scale: none; transform: scale(0, 0);">
+              <img class="star review_star_1" src="./star.svg" style="translate: none; rotate: none; scale: none; transform: scale(0, 0);">
+              <img class="star review_star_1" src="./star.svg" style="translate: none; rotate: none; scale: none; transform: scale(0, 0);">
+              <img class="star review_star_1" src="./star.svg" style="translate: none; rotate: none; scale: none; transform: scale(0, 0);">
+            </div>
+    
+            <div class="publisher_title" style="opacity: 0;">THE GUARDIAN</div>
+    
+          </div>
+
+
+          <div id="star_rating_comtainer_2" class="star_rating_container">
+
+            <div class="stars_container">
+              <img class="star review_star_2" src="./star.svg" style="translate: none; rotate: none; scale: none; transform: scale(0, 0);">
+              <img class="star review_star_2" src="./star.svg" style="translate: none; rotate: none; scale: none; transform: scale(0, 0);">
+              <img class="star review_star_2" src="./star.svg" style="translate: none; rotate: none; scale: none; transform: scale(0, 0);">
+              <img class="star review_star_2" src="./star.svg" style="translate: none; rotate: none; scale: none; transform: scale(0, 0);">
+            </div>
+    
+            <div class="publisher_title" style="opacity: 0;">iNEWS</div>
+    
+          </div>
+
+
+        </div>
+     
+
+
+        <div id="blue_panel" class="fullsize" style="translate: none; rotate: none; scale: none; transform-origin: 50% 100%; transform: translate(0px, 0px);"></div>
+
+        <!-- <img class = "fullsize" src="TEMP______layout_2.jpg"> -->
+
+
+        <img id="show_logo" src="./show_logo.png" style="translate: none; rotate: none; scale: none; transform: translate(0px, 80px);">
+        <img id="show_logo_2" src="./show_logo.png" style="translate: none; rotate: none; scale: none; transform: translate(0px, 0px); opacity: 1;">
+        <img id="stream_on_logo" src="./stream_on_logo.svg" style="translate: none; rotate: none; scale: none; transform: translate(0px, 80px);">
+        <img id="stream_on_logo_2" src="./stream_on_logo_2.svg" style="translate: none; rotate: none; scale: none; transform: translate(0px, 0px); opacity: 1;">
+
+        <div id="exit" class="fullsize"></div>
+      </div>
+     </div>
+
+  <script src="./gsap_3.11.5_min.js"></script>
+  <script src="./preloadjs_1.0.0_min.js"></script>
+  <script src="./SplitText.min.js"></script>
+  <script src="./logic.js"></script>
+
+
+</body></html>
