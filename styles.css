@@ -1,5 +1,7 @@
 * {
     padding: 2px;
+    margin: 0;
+    box-sizing: 0;
     position: relative;
     background-color: lightgoldenrodyellow;
     border: 1px solid lightblue
@@ -7,6 +9,7 @@
 
 img {
     border: 3px solid lightblue
+    justify-content: center
   }
 
 #close_up_laughing {
@@ -47,7 +50,6 @@ body {
     color: blue;
     text-align: justify;
 }
-
 h1 {
     text-align: center;
     margin: 25px
@@ -89,5 +91,40 @@ p {
 }
 
 footer {
+    text-align: center;
+}
+
+.container {
+        justify-content: center;
+        margin: auto;
+        display: grid;
+        grid-gap: 2px;
+        grid-template-columns: 20% 20% 20%;
+        grid-template-rows: 25% 25% 25% 25%;
+        text-align: center;
+        color:white
+}
+    
+.container div:nth-child(1), div:nth-child(6), div:nth-child(11) {
+    background-color: #B8336A;
+}
+    
+.container div:nth-child(2), div:nth-child(7), div:nth-child(12) {
+    background-color: #726DA8;
+}
+    
+.container div:nth-child(3), div:nth-child(8) {
+    background-color: #7D8CC4;
+}
+    
+.container div:nth-child(4), div:nth-child(9) {
+    background-color: #A0D2DB;
+}
+    
+.container div:nth-child(5), div:nth-child(10) {
+    background-color: #C490D1;
+}
+
+#stsection1 {
     text-align: center;
 }
